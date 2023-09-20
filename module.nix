@@ -32,6 +32,8 @@ in {
 
     environment.systemPackages = [ dell-fan-control ];
 
+    users.users.${cfg.user} = {};
+
     systemd.services."dell-fan-control" = {
       enable = true;
 
