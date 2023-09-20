@@ -32,7 +32,10 @@ in {
 
     environment.systemPackages = [ dell-fan-control ];
 
-    users.users.${cfg.user}.group = cfg.user;
+    users.users.${cfg.user} = {
+      isSystemUser = true;
+      group = cfg.user;
+    };
     users.groups.${cfg.user} = {};
 
     systemd.services."dell-fan-control" = {
