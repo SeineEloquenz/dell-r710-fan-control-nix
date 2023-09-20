@@ -16,6 +16,16 @@ in {
       default = false;
       description = "Whether to enable the dell fan control service";
     };
+    user = mkOption {
+      type = types.str;
+      default = "fanctl";
+      description = "The user to run the service as";
+    };
+    frequency = mkOption {
+      type = types.str;
+      default = "15";
+      description = "How often to run the script";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -31,8 +41,9 @@ in {
       serviceConfig = {
         Type = "simple";
         ExecStart = "${dell-fan-control}/bin/dell-fan-control";
+        User = cfg.user;
         Restart = "always";
-        RestartSec = "15";
+        RestartSec = cfg.frequency;
       };
 
       wantedBy = [ "multi-user.target" ];
