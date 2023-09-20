@@ -1,0 +1,1 @@
+# dell-r710-fan-control-nix
