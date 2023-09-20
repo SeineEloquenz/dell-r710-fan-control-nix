@@ -31,7 +31,7 @@ in stdenvNoCC.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
     install -m755 $src/fan_control.py $out/bin/dell-fan-control
-    sed -i 's,#!/usr/bin/env python3,${python311}/bin/python,' $out/bin/dell-fan-control
+    sed -i 's,#!/usr/bin/env python3,#!${python311}/bin/python,' $out/bin/dell-fan-control
     sed -i 's,/opt/fan_control/fan_control.yaml,/etc/fan_control.yaml,' $out/bin/dell-fan-control
   '';
 
