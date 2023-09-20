@@ -1,8 +1,7 @@
 { lib
-, stdenvNoCC
+, stdenv
 , fetchFromGitHub
 , python311
-, python311Packages
 , makeWrapper
 , ... }:
 
@@ -15,23 +14,23 @@ let
     hash = "sha256-zL4axUn74hUav2zYL6USklq4lKIaSQlLJtWGr/GTYeo=";
   };
 
-in stdenvNoCC.mkDerivation {
+in stdenv.mkDerivation {
 
   pname = "dell-fan-control";
   version = "git";
 
   inherit src;
 
-  buildInputs = [
-    python311
-    python311Packages.pysensors
-    python311Packages.pyyaml
+  propagatedBuildInputs = [
+    (python311.withPackages (pythonPackages: with pythonPackages; [
+      pysensors
+      pyyaml
+    ]))
   ];
 
   installPhase = ''
     mkdir -p $out/bin
-    install -m755 $src/fan_control.py $out/bin/dell-fan-control
-    sed -i 's,#!/usr/bin/env python3,#!${python311}/bin/python,' $out/bin/dell-fan-control
+    install -Dm755 $src/fan_control.py $out/bin/dell-fan-control
     sed -i 's,/opt/fan_control/fan_control.yaml,/etc/fan_control.yaml,' $out/bin/dell-fan-control
   '';
 
